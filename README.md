@@ -1,9 +1,9 @@
-# State-transition dynamics of resting state fMRI data.
+# State-transition dynamics of resting state fMRI data
 
 When you use the code provided here, please cite the following paper:
 *citation will be here**
 
-# About this repository.
+# About this repository
 This repository provides the code written in Python for computing dynamics of discrete states of multi-variate resting state fMRI data determined with multiple clustering methods, and the test-retest reliability of the dynamics of discrete states. 
 
 # How to use?
@@ -18,10 +18,10 @@ Cluster labels, centroids, GEV and other observables (coverage time, frequency, 
 - `test_retest_reliability.py` file has several function for test-retest reliability test. The function `ND_value(observable_results, distance)` provides ND value by taking observables of multiple sessions from multiple participants. `permuted_ND(N, observable_results, distance)` function perform the permutation test. It produces the ND values of the permuted results and p-values of the permutation test for five observables. 
 
 
-# Sample dataset:
+# Sample dataset
 We provide four dummy data files named `sample_data_participant1_session1.csv`, `sample_data_participant1_session2.csv`, `sample_data_participant2_session1.csv` and `sample_data_participant2_session2.csv` each of which contains 8 ROIs and 1000 time points.
 First need to read these data files and convert them as numpy array and then you can do analyze the state-dynamics (see [example notebook](https://github.com/sislam99/fmri_state_transition_dynamics/blob/main/example.ipynb) ). To conduct the analysis with different data sets, one needs to replace the data files. 
 
-# Example in notebook
+# Example notebook
 In this notebook, we demonstrated the state-transition dynamics analysis using dummy data. We also showed the the test-retest reliability. 
 
