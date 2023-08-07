@@ -3,85 +3,6 @@ import pandas as pd
 import itertools
 from itertools import groupby, combinations
 
-def dissimilarity(A, B, distance=None):
-    """
-    Calculate the dissimilarity between two numpy arrays A and B based on the specified distance measure.
-
-    Parameters:
-        A (numpy array): The first input array.
-        B (numpy array): The second input array.
-        distance (str or None): The distance measure to be used. Options are "cosine", "Euclidean", or None.
-                                If None, "cosine" distance is used.
-
-    Returns:
-        numpy array: The dissimilarity matrix between A and B.
-    """
-    if (distance == None) | (distance == "cosine"):
-        similarity = np.inner(A, B) / np.outer((A * A).sum(axis=1) ** 0.5, (B * B).sum(axis=1) ** 0.5)
-        dissim = 1 - similarity
-    elif distance == "Euclidean":
-        # Reshape the arrays to have a new axis
-        A_reshaped = A[:, np.newaxis, :]
-        B_reshaped = B[np.newaxis, :, :]
-        # Calculate Euclidean distances
-        dissim = np.linalg.norm(A_reshaped - B_reshaped, axis=2)
-    else:
-        raise ValueError("Invalid distance measure. Use 'cosine', 'Euclidean', or None.")
-    return dissim
-
-
-def greedy_matching_pair(centroid1, centroid2, distance):
-    """
-    Find matching pairs between two sets of centroids using a greedy approach.
-
-    Parameters:
-        centroid1 (numpy array): Centroid points of the first set.
-        centroid2 (numpy array): Centroid points of the second set.
-        distance (str or None): The distance measure to be used for dissimilarity calculation.
-                                Options are "cosine", "Euclidean", or None.
-
-    Returns:
-        list: Indices of the matched centroids from the first set.
-        list: Indices of the matched centroids from the second set.
-        float: The mean dissimilarity value between the matched centroids.
-    """
-    dissim_mat = dissimilarity(centroid1, centroid2, distance)
-    n_rows, n_cols = dissim_mat.shape
-    pairs = [(i, j) for i in range(n_rows) for j in range(n_cols)]
-    pairs.sort(key=lambda x: dissim_mat[x[0], x[1]])
-    row_set, col_set = set(), set()
-    matched1, matched2 = [], []
-    for i, j in pairs:
-        if i not in row_set and j not in col_set:
-            matched1.append(i)
-            matched2.append(j)
-            row_set.add(i)
-            col_set.add(j)
-    return matched1, matched2, np.mean(dissim_mat[matched1, matched2])
-
-
-def matching_pair(centroid1, centroid2, distance):
-    """
-    Find the optimal matching pairs between two sets of centroids using a permutation approach.
-    Parameters:
-        centroid1 (numpy array): Centroid points of the first set.
-        centroid2 (numpy array): Centroid points of the second set.
-        distance (str or None): The distance measure to be used for dissimilarity calculation.
-                                Options are "cosine", "Euclidean", or None.
-
-    Returns:
-        list: Indices of the matched centroids from the first set.
-        list: Indices of the matched centroids from the second set.
-        float: The mean dissimilarity value between the matched centroids.
-    """
-    K = len(centroid1)
-    combination = [(range(K), x) for x in itertools.permutations(range(K), len(range(K)))]
-    dissim_mat = dissimilarity(centroid1, centroid2, distance)
-    all_values = np.array([sum(abs(dissim_mat[combination[ci]])) / K for ci in range(len(combination))])
-    min_idx = np.argmin(all_values)
-    min_value = all_values[min_idx]
-    return list(combination[min_idx][0]), list(combination[min_idx][1]), min_value
-
 def reproducibility(all_results, distance, WP=None, BP=None):
     """
     Calculate reproducibility measures between multiple sessions or subjects.
@@ -142,6 +63,84 @@ def reproducibility(all_results, distance, WP=None, BP=None):
             across_measurements.append(np.array([match_dist, tv_cov, tv_freq, tv_life, frob_tran])) 
     
     return across_measurements
+
+
         
+def matching_pair(centroid1, centroid2, distance):
+    """
+    Find the optimal matching pairs between two sets of centroids using a permutation approach.
+    Parameters:
+        centroid1 (numpy array): Centroid points of the first set.
+        centroid2 (numpy array): Centroid points of the second set.
+        distance (str or None): The distance measure to be used for dissimilarity calculation.
+                                Options are "cosine", "Euclidean", or None.
+
+    Returns:
+        list: Indices of the matched centroids from the first set.
+        list: Indices of the matched centroids from the second set.
+        float: The mean dissimilarity value between the matched centroids.
+    """
+    K = len(centroid1)
+    combination = [(range(K), x) for x in itertools.permutations(range(K), len(range(K)))]
+    dissim_mat = dissimilarity(centroid1, centroid2, distance)
+    all_values = np.array([sum(abs(dissim_mat[combination[ci]])) / K for ci in range(len(combination))])
+    min_idx = np.argmin(all_values)
+    min_value = all_values[min_idx]
+    return list(combination[min_idx][0]), list(combination[min_idx][1]), min_value
 
 
+
+def greedy_matching_pair(centroid1, centroid2, distance):
+    """
+    Find matching pairs between two sets of centroids using a greedy approach.
+
+    Parameters:
+        centroid1 (numpy array): Centroid points of the first set.
+        centroid2 (numpy array): Centroid points of the second set.
+        distance (str or None): The distance measure to be used for dissimilarity calculation.
+                                Options are "cosine", "Euclidean", or None.
+
+    Returns:
+        list: Indices of the matched centroids from the first set.
+        list: Indices of the matched centroids from the second set.
+        float: The mean dissimilarity value between the matched centroids.
+    """
+    dissim_mat = dissimilarity(centroid1, centroid2, distance)
+    n_rows, n_cols = dissim_mat.shape
+    pairs = [(i, j) for i in range(n_rows) for j in range(n_cols)]
+    pairs.sort(key=lambda x: dissim_mat[x[0], x[1]])
+    row_set, col_set = set(), set()
+    matched1, matched2 = [], []
+    for i, j in pairs:
+        if i not in row_set and j not in col_set:
+            matched1.append(i)
+            matched2.append(j)
+            row_set.add(i)
+            col_set.add(j)
+    return matched1, matched2, np.mean(dissim_mat[matched1, matched2])
+
+def dissimilarity(A, B, distance=None):
+    """
+    Calculate the dissimilarity between two numpy arrays A and B based on the specified distance measure.
+
+    Parameters:
+        A (numpy array): The first input array.
+        B (numpy array): The second input array.
+        distance (str or None): The distance measure to be used. Options are "cosine", "Euclidean", or None.
+                                If None, "cosine" distance is used.
+
+    Returns:
+        numpy array: The dissimilarity matrix between A and B.
+    """
+    if (distance == None) | (distance == "cosine"):
+        similarity = np.inner(A, B) / np.outer((A * A).sum(axis=1) ** 0.5, (B * B).sum(axis=1) ** 0.5)
+        dissim = 1 - similarity
+    elif distance == "Euclidean":
+        # Reshape the arrays to have a new axis
+        A_reshaped = A[:, np.newaxis, :]
+        B_reshaped = B[np.newaxis, :, :]
+        # Calculate Euclidean distances
+        dissim = np.linalg.norm(A_reshaped - B_reshaped, axis=2)
+    else:
+        raise ValueError("Invalid distance measure. Use 'cosine', 'Euclidean', or None.")
+    return dissim
