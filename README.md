@@ -23,5 +23,5 @@ We provide four dummy data files named `sample_data_participant1_session1.csv`, 
 First need to read these data files and convert them as numpy array and then you can do analyze the state-dynamics (see [example notebook](https://github.com/sislam99/fmri_state_transition_dynamics/blob/main/example.ipynb) ). To conduct the analysis with different data sets, one needs to replace the data files. 
 
 # Example notebook
-In this notebook, we demonstrated the state-transition dynamics analysis using dummy data. We also showed the the test-retest reliability. 
+In the [example notebook](https://github.com/sislam99/fmri_state_transition_dynamics/blob/main/example.ipynb), we demonstrated the state-transition dynamics analysis using dummy data. We also showed the the test-retest reliability. 
 
