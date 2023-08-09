@@ -8,11 +8,13 @@ This repository provides the code written in Python for doing the following two 
 - Compute dynamics of discrete states of multi-variate resting state fMRI data determined with one of the seven clustering methods.
 - Assess the test-retest reliability of the estimated dynamics of discrete states. 
 
-# How to use?
-According to the article, there are few steps from determining clusters to reliability test. We divided the whole analysis in few parts and for each parts we provided the Python (.py) file with helping functions and required libraries. 
+# How to use the code?
+As our paper describes, there are a few steps from determining clusters to the test-retest reliability test. We divided the whole analysis into a few parts and for each part provided the Python (.py) file with helping functions and required libraries. 
 
 - `all_observables.py` contains a few functions. These functions can be used to determine the 
-Cluster labels, centroids, GEV and other observables (coverage time, frequency, average lifespan, transition probability matrix). For example, `Kmeans(data, num_clusters)` will take time series data: "data" and number of cluster: "num_clusters" as input, and will provide labels of each time points and centroid of each cluster. The function `lav_observ(data, method, num_clusters)` is written to provide labels of each time points, GEV, and all five observables((centroid position, coverage time, frequency, average lifespan, transition probability matrix) for a given time series data, method (Kmeans, Kmedoids, AC, AAHC, TAAHC, Bisecting_Kmeans, GMM).
+Cluster labels, centroids, GEV, and other observables (coverage time, frequency, average lifespan, transition probability matrix).
+    - For example, function `Kmeans(data, num_clusters)` takes the time series data (i.e., "data") and the number of clusters (i.e., "num_clusters") as input, and outputs the cluster label of each time point and the centroid of each cluster.
+    - Function `lav_observ(data, method, num_clusters)` outputs the cluster label of each time point, GEV, and all five observables((centroid position, coverage time, frequency, average lifespan, transition probability matrix). Its inputs are the time series data, clustering method (Kmeans, Kmedoids, AC, AAHC, TAAHC, Bisecting_Kmeans, or GMM), and the number of clusters.
 
 
 - `discrepancy_measures.py` has functions which altogether provide discrepancy measures of observables between sessions of the same participant and between different participants.
