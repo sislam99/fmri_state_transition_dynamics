@@ -3,7 +3,6 @@
 When you use the code provided here, please cite the following paper:
 *citation will be here**
 
-# About this repository
 This repository provides the code written in Python for doing the following two analyses:
 - Compute dynamics of discrete states of multi-variate resting state fMRI data determined with one of the seven clustering methods.
 - Assess the test-retest reliability of the estimated dynamics of discrete states. 
