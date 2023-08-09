@@ -23,10 +23,9 @@ Cluster labels, centroids, GEV and other observables (coverage time, frequency, 
     - Function `permuted_ND(N, observable_results, distance)` performs the permutation test. It produces the ND values of the permuted results and p-values of the permutation test for five observables. 
 
 
-# Sample dataset
+# Sample data
 We provide four dummy data files named `sample_data_participant1_session1.csv`, `sample_data_participant1_session2.csv`, `sample_data_participant2_session1.csv` and `sample_data_participant2_session2.csv` each of which contains 8 ROIs and 1000 time points.
-First need to read these data files and convert them as numpy array and then you can do analyze the state-dynamics (see [example notebook](https://github.com/sislam99/fmri_state_transition_dynamics/blob/main/example.ipynb) ). To conduct the analysis with different data sets, one needs to replace the data files. 
+You first nee to read these data files and convert them to numpy array before running any of the analysis above (see [example notebook](https://github.com/sislam99/fmri_state_transition_dynamics/blob/main/example.ipynb)).
 
 # Example notebook
-In the [example notebook](https://github.com/sislam99/fmri_state_transition_dynamics/blob/main/example.ipynb), we demonstrated the state-transition dynamics analysis using dummy data. We also showed the the test-retest reliability. 
-
+In the [example notebook](https://github.com/sislam99/fmri_state_transition_dynamics/blob/main/example.ipynb), we demonstrate the state-transition dynamics analysis using dummy data. We also included the test-retest reliability analysis.
