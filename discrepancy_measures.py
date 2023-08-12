@@ -3,15 +3,14 @@ import pandas as pd
 import itertools
 from itertools import groupby, combinations
 
-def reproducibility(all_results, distance, WP=None, BP=None):
+def reproducibility(all_results, distance, comparison):
     """
     Calculate reproducibility measures between multiple sessions or subjects.
 
     Parameters:
         all_results (numpy array): A 2D array containing results such as centroids, coverage time, frequency, average lifespan, and transition probability matrix of multiple sessions or subjects.
         distance (str or None): The distance measure to be used for matching centroids. Options are "cosine", "Euclidean", or None.
-        WP (bool or None): If True, the analysis will be performed within subjects. If False or None, it will be performed within subjects (subjects).
-        BP (bool or None): If True, the analysis will be performed between subjects. If False or None, it will be performed between subjects (subjects).
+        comparison (str): The type of comparison to be performed. Options are "WP" for within-participant and "BP" for between-participant.
 
     Returns:
         list: A list containing reproducibility measures between all pairs of sessions or subjects.
@@ -23,18 +22,19 @@ def reproducibility(all_results, distance, WP=None, BP=None):
                 - Element 4: Frobenius norm of the difference in transition probability matrices between matched clusters.
     """
     P, S = all_results.shape
-    if (WP == True) & (BP == None):
+    if comparison == "WP":
         # If within-subject analysis, consider all pairs of sessions
         all_pairs = np.array(list(combinations(list(range(S)), 2)))
         R = P
-    if (WP == None) & (BP == True):
+    elif comparison == "BP":
         # If between-subject analysis, consider all pairs of subjects
         all_pairs = np.array(list(combinations(list(range(P)), 2)))
         R = S
         all_results = all_results.T
-
+    else:
+        raise ValueError("Invalid comparison type. Please use 'WP' for within-participant or 'BP' for between-participant.")
+        
     across_measurements = []
-    
     for r in range(R):
         for pr in all_pairs:
             inf1, inf2 = all_results[r, pr]
@@ -52,7 +52,7 @@ def reproducibility(all_results, distance, WP=None, BP=None):
             # Calculate the temporal variations of coverage time, frequency, and average lifespan between matched clusters
             tv_cov = max(abs(inf1["coverage_time"][matched1] - inf2["coverage_time"][matched2]))
             tv_freq = max(abs(inf1["frequency"][matched1] - inf2["frequency"][matched2]))
-            tv_life = max(abs(inf1["average_life_span"][matched1] - inf2["average_life_span"][matched2]))
+            tv_life = max(abs(inf1["average_lifespan"][matched1] - inf2["average_lifespan"][matched2]))
 
             # Calculate the Frobenius norm of the difference in transition probability matrices between matched clusters
             arange_trans1 = (inf1["transition_prob"][matched1, :])[:, matched1]
