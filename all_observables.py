@@ -1,3 +1,8 @@
+import numpy as np
+import pandas as pd
+from sklearn.cluster import KMeans,  AgglomerativeClustering, BisectingKMeans
+from sklearn_extra.cluster import KMedoids
+from sklearn.mixture import GaussianMixture
 
 def lav_observ(data, method, num_clusters):
     """
@@ -100,10 +105,35 @@ def getting_gev(gfp, data, labels, centroids):
     """
     # Calculate the number of clusters based on the length of the centroids array
     n_cluster = len(centroids)
+
     # Calculate the Global Explained Variance (GEV) for the given dataset
-    gev = sum([np.dot((correlation(centroids[k, :], data[labels == k, :])[0, 1:]),
+    gev = sum([np.dot(cosine_similarity_1d_to_2d(centroids[k, :], data[labels == k, :]),
             (gfp[labels == k])**2) / np.sum(gfp**2) for k in range(n_cluster)])
     return gev
+
+def cosine_similarity_1d_to_2d(y, Y):
+    """
+    Calculate cosine similarity between a 1D array and a 2D array.
+
+    Parameters:
+        y (numpy array): The 1D array (row vector) of length N.
+        Y (numpy array): The 2D array of shape (M, N) where M is the number of rows and N is the length of each row.
+
+    Returns:
+        numpy array: An array containing the cosine similarity between y and each row of Y.
+    """
+    # Calculate the dot product between y and each row of Y
+    dot_products = np.dot(Y, y)
+    # Calculate the magnitude (Euclidean norm) of y
+    magnitude_y = np.linalg.norm(y)
+    # Calculate the magnitudes of each row of Y
+    magnitudes_Y = np.linalg.norm(Y, axis=1)
+    # Calculate cosine similarity between A and each row of B
+    cosine_similarities = dot_products / (magnitude_y * magnitudes_Y)
+
+    return cosine_similarities
+
+
 
 ################################
 ## METHODS#
