@@ -30,7 +30,7 @@ cluster labels for each time point, centroids of the clusters, and calculate the
     - Function `ND_value(all_results, distance)` outputs the ND value. Its inputs are:
         - "all_results", which contains all observable values for all the sessions and all the participants [NM: Is this observable_results different from all_results? I am confused.] [Saiful: both observable_results and all_results are the same.][NM: Then, please rewrite everything (including the code using all_results instead of observable_results). This tremendously helps avoiding any confusion.] [Saiful: Done.] and
         - "distance"; see the explanation of `discrepancy_measures.py` above.
-    - Function `permuted_ND(N, observable_results, distance)` performs the permutation test. This function outputs the ND values of the permuted results and p-values of the permutation test for five observables. 
+    - Function `permuted_ND(N, all_results, distance)` performs the permutation test. This function outputs the ND values of the permuted results and p-values of the permutation test for five observables. 
 
 
 # Sample data
