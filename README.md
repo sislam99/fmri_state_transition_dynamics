@@ -23,11 +23,11 @@ cluster labels for each time point, centroids of the clusters, and calculate the
         - "all_results", which contains all the observable values for all the sessions and all the participants, calculated using `lav_observ(data, method, num_clusters)`,
         - "distance", which should be either 'Euclidean' or 'cosine'. This is used for matching the states from two sessions, and
         - "comparison", which should be either 'WP' (for within-participant comparison) or 'BP' (for between-participant comparison). 
-    - The output of this function is a list in which each element is an numpy array consisting of the dissimilarity in the centroid position between two sessions, TV of coverage time, TV of frequency of appearance, TV of average lifespan, and the Frobenius distance between two transition probability matrices. [NM: What does each element of the list correspond to? A session pair?][Saiful: A session pair.]
+    - The output of this function is a list in which each element is an numpy array consisting of the dissimilarity in the centroid position between two sessions, TV of coverage time between the same two sessions, TV of frequency of each state between the two sessions, TV of average lifespan between the two sessions, and the Frobenius distance between the two transition probability matrices. The length of the list of the number of session pairs to be considered.
 
 - `test_retest_reliability.py` has functions for the test-retest reliability analysis.
     - Function `ND_value(all_results, distance)` outputs the ND value. Its inputs are:
-        - "all_results", which contains all observable values for all the sessions and all the participants [NM: Is this observable_results different from all_results? I am confused.] [Saiful: both observable_results and all_results are the same.][NM: Then, please rewrite everything (including the code using all_results instead of observable_results). This tremendously helps avoiding any confusion.] [Saiful: Done.] and
+        - "all_results", which contains all observable values for all the sessions and all the participants, and
         - "distance"; see the explanation of `discrepancy_measures.py` above.
     - Function `permuted_ND(N, all_results, distance)` performs the permutation test. This function outputs the ND values of the permuted results and p-values of the permutation test for five observables. 
 
