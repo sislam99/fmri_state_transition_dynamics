@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from itertools import groupby
 from sklearn.cluster import KMeans,  AgglomerativeClustering, BisectingKMeans
 from sklearn_extra.cluster import KMedoids
 from sklearn.mixture import GaussianMixture
@@ -56,16 +57,19 @@ def observables4(lab):
         tuple: A tuple containing the coverage time (normalized), frequency, 
                average lifespan, and transition matrix.
     """
-    # Counting unique appearances of microstates in the sequence
+    
+    # Counting appearance and unique appearances of microstates in the sequence
     unique_states, state_counts = np.unique(lab, return_counts=True)
-    # Frequency: Proportion of time each unique microstate appears in the sequence
-    freq = state_counts / len(lab)
+    a = [k for k, v in groupby(lab)] 
+    fr = np.unique(a, return_counts=True)[1]
     # Coverage time: Number of times each unique microstate appears in the sequence
     coverage_time = state_counts
+    # Frequency: Proportion of time each unique microstate appears in the sequence
+    freq = fr / len(lab)
     # Average lifespan: Average duration of each microstate
-    average_lifespan = coverage_time / state_counts
+    average_lifespan = coverage_time / fr
     # Transition matrix: Probabilities of transitioning between microstates
-    tran_mat = transition_prob(state_list=lab)
+    tran_mat = transition_prob(state_list=a)
     return coverage_time, freq, average_lifespan, tran_mat
 
 
