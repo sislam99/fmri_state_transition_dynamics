@@ -1,7 +1,7 @@
 # State-transition dynamics of resting state fMRI data
 
 When you use the code provided here, please cite the following paper:
-*citation will be here*
+[State-transition dynamics of resting-state functional magnetic resonance imaging data: Model comparison and test-to-retest analysis](https://arxiv.org/abs/2308.11910)
 
 This repository provides the code written in Python for the following two analyses:
 - Compute dynamics of discrete states of multi-variate resting state fMRI data determined with one of the seven clustering methods.
